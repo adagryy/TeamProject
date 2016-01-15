@@ -1,5 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('myApp', [
-])
+angular.module('TeamProject', [
+    'ui.router',
+    'TeamProject.HeaderModule'
+]);
