@@ -1,0 +1,77 @@
+-- Table: public.grupa_wiekowa
+
+-- DROP TABLE public.grupa_wiekowa;
+
+CREATE TABLE public.grupa_wiekowa
+(
+  id_grupy_wiekowej integer NOT NULL,
+  "przedział" text,
+  CONSTRAINT grupa_wiekowa_pkey PRIMARY KEY (id_grupy_wiekowej)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.grupa_wiekowa
+  OWNER TO postgres;
+  
+  -- Table: public.odpowiedzi
+
+-- DROP TABLE public.odpowiedzi;
+
+CREATE TABLE public.odpowiedzi
+(
+  nr_pytania integer NOT NULL,
+  tak integer DEFAULT 0,
+  nie integer DEFAULT 0,
+  profesja text,
+  gr_wiekowa integer,
+  id_odpowiedzi integer NOT NULL,
+  CONSTRAINT odpowiedzi_pkey PRIMARY KEY (id_odpowiedzi),
+  CONSTRAINT odpowiedzi_gr_wiekowa_fkey FOREIGN KEY (gr_wiekowa)
+      REFERENCES public.grupa_wiekowa (id_grupy_wiekowej) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT odpowiedzi_nr_pytania_fkey FOREIGN KEY (nr_pytania)
+      REFERENCES public.pytania (id_pytania) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.odpowiedzi
+  OWNER TO postgres;
+  
+  -- Table: public.pytania
+
+-- DROP TABLE public.pytania;
+
+CREATE TABLE public.pytania
+(
+  id_pytania integer NOT NULL,
+  tresc text,
+  id_grupy integer,
+  CONSTRAINT pytania_pkey PRIMARY KEY (id_pytania),
+  CONSTRAINT pytania_id_grupy_fkey FOREIGN KEY (id_grupy)
+      REFERENCES public.typy_osobowosci (id_typu_osobowosci) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.pytania
+  OWNER TO postgres;
+-- Table: public.typy_osobowosci
+
+-- DROP TABLE public.typy_osobowosci;
+
+CREATE TABLE public.typy_osobowosci
+(
+  id_typu_osobowosci integer NOT NULL,
+  opis text,
+  CONSTRAINT typy_osobowosci_pkey PRIMARY KEY (id_typu_osobowosci)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.typy_osobowosci
+  OWNER TO postgres;
+
